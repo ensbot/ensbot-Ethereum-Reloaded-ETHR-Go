@@ -33,18 +33,27 @@ var (
 var (
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
-		ChainID:             big.NewInt(29021982),
+		ChainID:             big.NewInt(22082018),
 		HomesteadBlock:      big.NewInt(0),
 		DAOForkBlock:        nil,
 		DAOForkSupport:      false,
 		EIP150Block:         big.NewInt(0),
 		EIP150Hash:          common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
-		EIP155Block:         big.NewInt(1),
-		EIP158Block:         big.NewInt(1),
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
 		ByzantiumBlock:      big.NewInt(0),
 		ConstantinopleBlock: nil,
-		ForkMasternode:      big.NewInt(300000),
-		ForkSmartContract:   big.NewInt(1200000),
+		ForkMasternode:      big.NewInt(0),
+		ForkSmartContract:   big.NewInt(0),
+		EraV1Block:          big.NewInt(1000000),
+		EraV2Block:          big.NewInt(3500000),
+		EraV3Block:          big.NewInt(8000000),
+		EraV4Block:          big.NewInt(10000000),
+		EraV5Block:          big.NewInt(15000000),
+		EraV6Block:          big.NewInt(18000000),
+		EraV7Block:          big.NewInt(20000000),
+		EraV8Block:          big.NewInt(20500000),
+		EraV9Block:          big.NewInt(30000000),
 		Ethash:              new(EthashConfig), 
 	}
 
@@ -62,6 +71,15 @@ var (
 		ConstantinopleBlock: nil,
 		ForkMasternode:      big.NewInt(0),
 		ForkSmartContract:   big.NewInt(0),
+		EraV1Block:          big.NewInt(1000000),
+		EraV2Block:          big.NewInt(3500000),
+		EraV3Block:          big.NewInt(8000000),
+		EraV4Block:          big.NewInt(10000000),
+		EraV5Block:          big.NewInt(15000000),
+		EraV6Block:          big.NewInt(18000000),
+		EraV7Block:          big.NewInt(20000000),
+		EraV8Block:          big.NewInt(20500000),
+		EraV9Block:          big.NewInt(30000000),
 		Ethash:              new(EthashConfig),
 	}
 
@@ -79,6 +97,15 @@ var (
 		ConstantinopleBlock: nil,
 		ForkMasternode:      nil,
 		ForkSmartContract:   nil,
+		EraV1Block:          big.NewInt(1000000),
+		EraV2Block:          big.NewInt(3500000),
+		EraV3Block:          big.NewInt(8000000),
+		EraV4Block:          big.NewInt(10000000),
+		EraV5Block:          big.NewInt(15000000),
+		EraV6Block:          big.NewInt(18000000),
+		EraV7Block:          big.NewInt(20000000),
+		EraV8Block:          big.NewInt(20500000),
+		EraV9Block:          big.NewInt(30000000),
 		Clique: &CliqueConfig{
 			Period: 15,
 			Epoch:  30000,
@@ -90,16 +117,16 @@ var (
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), new(EthashConfig), nil}
+	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), new(EthashConfig), nil}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, &CliqueConfig{Period: 0, Epoch: 30000}}
+	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, &CliqueConfig{Period: 0, Epoch: 30000}}
 
-	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), new(EthashConfig), nil}
+	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), new(EthashConfig), nil}
 	TestRules       = TestChainConfig.Rules(new(big.Int))
 )
 
@@ -127,7 +154,16 @@ type ChainConfig struct {
 	ConstantinopleBlock *big.Int `json:"constantinopleBlock,omitempty"` // Constantinople switch block (nil = no fork, 0 = already on byzantium)
 	ForkMasternode         *big.Int `json:"ForkMasternode,omitempty"`         // Roller switch block (nil = no fork, 0 = already on Roller)
 	ForkSmartContract     *big.Int `json:"forkSmartContract,omitempty"`     //second fork Roller release
-
+	EraV1Block     *big.Int `json:"EraV1Block,omitempty"`
+	EraV2Block     *big.Int `json:"EraV2Block,omitempty"`
+	EraV3Block     *big.Int `json:"EraV31Block,omitempty"`
+	EraV4Block     *big.Int `json:"EraV4Block,omitempty"`
+	EraV5Block     *big.Int `json:"EraV5Block,omitempty"`
+	EraV6Block     *big.Int `json:"EraV6Block,omitempty"`
+	EraV7Block     *big.Int `json:"EraV7Block,omitempty"`
+	EraV8Block     *big.Int `json:"EraV8Block,omitempty"`
+	EraV9Block     *big.Int `json:"EraV9Block,omitempty"`
+	
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
 	Clique *CliqueConfig `json:"clique,omitempty"`
@@ -164,7 +200,7 @@ func (c *ChainConfig) String() string {
 	default:
 		engine = "unknown"
 	}
-	return fmt.Sprintf("{ChainID: %v Homestead: %v DAO: %v DAOSupport: %v EIP150: %v EIP155: %v EIP158: %v Byzantium: %v Constantinople: %v Fork Masternode: %v ForkSmartContract: %v Engine: %v}",
+	return fmt.Sprintf("{ChainID: %v Homestead: %v DAO: %v DAOSupport: %v EIP150: %v EIP155: %v EIP158: %v Byzantium: %v Constantinople: %v Fork Masternode: %v ForkSmartContract: %v EraV1Block: %v EraV2Block: %v EraV3Block: %v EraV4Block: %v EraV5Block: %v EraV6Block: %v EraV7Block: %v EraV8Block: %v EraV9Block: %v Engine: %v}",
 		c.ChainID,
 		c.HomesteadBlock,
 		c.DAOForkBlock,
@@ -176,6 +212,15 @@ func (c *ChainConfig) String() string {
 		c.ConstantinopleBlock,
 		c.ForkMasternode,
 		c.ForkSmartContract,
+		c.EraV1Block,
+		c.EraV2Block,
+		c.EraV3Block,
+		c.EraV4Block,
+		c.EraV5Block,
+		c.EraV6Block,
+		c.EraV7Block,
+		c.EraV8Block,
+		c.EraV9Block,
 		engine,
 	)
 }
@@ -220,11 +265,15 @@ func (c *ChainConfig) IsForkMasternode(num *big.Int) bool {
 	return isForked(c.ForkMasternode, num)
 }
 
-// IsBaneslayer returns whether num is either equal to the Baneslayer fork block or greater.
+// IsForkSmartContract returns whether num is either equal to the Baneslayer fork block or greater.
 func (c *ChainConfig) IsForkSmartContract(num *big.Int) bool {
 	return isForked(c.ForkSmartContract, num)
 }
 
+// IsEraV1 returns whether num is either equal to the Baneslayer fork block or greater.
+func (c *ChainConfig) IsEraV1(num *big.Int) bool {
+	return isForked(c.ForkSmartContract, num)
+}
 
 // GasTable returns the gas table corresponding to the current phase (homestead or homestead reprice).
 //
