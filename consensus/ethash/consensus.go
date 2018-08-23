@@ -36,15 +36,18 @@ import (
 
 // Ethash proof-of-work protocol constants.
 var (
-	FrontierBlockReward    *big.Int = big.NewInt(5e+18) // Block reward in wei for successfully mining a block
-	ByzantiumBlockReward   *big.Int = big.NewInt(9e+18) // Block reward in wei for successfully mining a block upward from Byzantium (Roller: block 1)
-	BlockRewardRunMN       *big.Int = big.NewInt(7e+18) // Block reward for the Roller initial release (hard fork)
-	MasterBlockReward      *big.Int = big.NewInt(2e+18) // Block reward for the Roller initial release (hard fork)
-	DevelopBlockReward     *big.Int = big.NewInt(1e+18) // Block reward for the Develop Roller initial release (hard fork)
+	EraV0BlockReward       *big.Int = big.NewInt(85e+17) // Block reward in wei for successfully mining a block (Start from block 0)
+	EraV1BlockReward       *big.Int = big.NewInt(60e+17) // Block reward in wei for successfully mining a block (Start from block 1000000)
+	EraV2BlockReward       *big.Int = big.NewInt(45e+17) // Block reward in wei for successfully mining a block (Start from block 3500000)
+	EraV3BlockReward       *big.Int = big.NewInt(40e+17) // Block reward in wei for successfully mining a block (Start from block 8000000)
+	EraV4BlockReward       *big.Int = big.NewInt(30e+17) // Block reward in wei for successfully mining a block (Start from block 10000000)
+	EraV5BlockReward       *big.Int = big.NewInt(25e+17) // Block reward in wei for successfully mining a block (Start from block 15000000)
+	EraV6BlockReward       *big.Int = big.NewInt(20e+17) // Block reward in wei for successfully mining a block (Start from block 18000000)
+	EraV7BlockReward       *big.Int = big.NewInt(75e+17) // Block reward in wei for successfully mining a block (Start from block 20000000 - Bonus)
+	EraV8BlockReward       *big.Int = big.NewInt(25e+17) // Block reward in wei for successfully mining a block (Start from block 20500000)
+	EraV9BlockReward       *big.Int = big.NewInt(15e+17) // Block reward in wei for successfully mining a block (Start from block 30000000 to Infinite)
 	maxUncles                       = 2                 // Maximum number of uncles allowed in a single block
-	allowedFutureBlockTime          = 15 * time.Second  // Max time from current time allowed for blocks, before they're considered future blocks
-	DevelopmentFundAddress          = common.HexToAddress("0xb09974a108b366b1350a63109589f032800aed42")
-	MasternodeFundAddress           = common.HexToAddress("0xf1fd34b7a4d3af6b4a8f6ff7d4c3d982fd5dd6af")
+	allowedFutureBlockTime          = 30 * time.Second  // Max time from current time allowed for blocks, before they're considered future blocks
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -538,18 +541,33 @@ var (
 // included uncles. The coinbase of each uncle block is also rewarded.
 func accumulateRewards(config *params.ChainConfig, state *state.StateDB, header *types.Header, uncles []*types.Header) {
 	// Select the correct block reward based on chain progression
-	blockReward := FrontierBlockReward // 
-	if config.IsByzantium(header.Number) {
-		blockReward = ByzantiumBlockReward
+	blockReward := EraV0BlockReward
+	if config.IsEraV1(header.Number) {
+		blockReward = EraV1BlockReward
 	}
-	
-	if config.IsForkMasternode(header.Number) {
-		blockReward = BlockRewardRunMN //7.00
+	if config.IsEraV2(header.Number) {
+		blockReward = EraV2BlockReward
 	}
-	if config.IsForkSmartContract(header.Number) {
-		blockReward = big.NewInt(600e+16)           
-		MasterBlockReward = big.NewInt(225e+16) 
-		DevelopBlockReward = big.NewInt(75e+16) 
+	if config.IsEraV3(header.Number) {
+		blockReward = EraV3BlockReward
+	}
+	if config.IsEraV4(header.Number) {
+		blockReward = EraV4BlockReward
+	}
+	if config.IsEraV5(header.Number) {
+		blockReward = EraV5BlockReward
+	}
+	if config.IsEraV6(header.Number) {
+		blockReward = EraV6BlockReward
+	}
+	if config.IsEraV7(header.Number) {
+		blockReward = EraV7BlockReward
+	}
+	if config.IsEraV8(header.Number) {
+		blockReward = EraV8BlockReward
+	}
+	if config.IsEraV9(header.Number) {
+		blockReward = EraV9BlockReward
 	}
 	
 	// Accumulate the rewards for the miner and any included uncles
@@ -566,10 +584,4 @@ func accumulateRewards(config *params.ChainConfig, state *state.StateDB, header 
 		reward.Add(reward, r)
 	}
 	state.AddBalance(header.Coinbase, reward)
-	// Roller Foundation address
-	state.AddBalance(DevelopmentFundAddress, DevelopBlockReward)
-	// Masternode Fund address
-	if config.IsForkMasternode(header.Number) {
-		state.AddBalance(MasternodeFundAddress, MasterBlockReward)
-	}
 }

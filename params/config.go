@@ -265,14 +265,45 @@ func (c *ChainConfig) IsForkMasternode(num *big.Int) bool {
 	return isForked(c.ForkMasternode, num)
 }
 
-// IsForkSmartContract returns whether num is either equal to the Baneslayer fork block or greater.
+// IsForkSmartContract returns whether num is either equal to the IsForkSmartContract fork block or greater.
 func (c *ChainConfig) IsForkSmartContract(num *big.Int) bool {
 	return isForked(c.ForkSmartContract, num)
 }
 
-// IsEraV1 returns whether num is either equal to the Baneslayer fork block or greater.
 func (c *ChainConfig) IsEraV1(num *big.Int) bool {
-	return isForked(c.ForkSmartContract, num)
+	return isForked(c.EraV1Block, num)
+}
+
+func (c *ChainConfig) IsEraV2(num *big.Int) bool {
+	return isForked(c.EraV2Block, num)
+}
+
+func (c *ChainConfig) IsEraV3(num *big.Int) bool {
+	return isForked(c.EraV3Block, num)
+}
+
+func (c *ChainConfig) IsEraV4(num *big.Int) bool {
+	return isForked(c.EraV4Block, num)
+}
+
+func (c *ChainConfig) IsEraV5(num *big.Int) bool {
+	return isForked(c.EraV5Block, num)
+}
+
+func (c *ChainConfig) IsEraV6(num *big.Int) bool {
+	return isForked(c.EraV6Block, num)
+}
+
+func (c *ChainConfig) IsEraV7(num *big.Int) bool {
+	return isForked(c.EraV7Block, num)
+}
+
+func (c *ChainConfig) IsEraV8(num *big.Int) bool {
+	return isForked(c.EraV8Block, num)
+}
+
+func (c *ChainConfig) IsEraV9(num *big.Int) bool {
+	return isForked(c.EraV9Block, num)
 }
 
 // GasTable returns the gas table corresponding to the current phase (homestead or homestead reprice).
@@ -344,7 +375,33 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, head *big.Int) *Confi
 	if isForkIncompatible(c.ForkSmartContract, newcfg.ForkSmartContract, head) {
 		return newCompatError("Baneslayer fork block smartcontract", c.ForkSmartContract, newcfg.ForkSmartContract)
 	}
-	
+	if isForkIncompatible(c.EraV1Block, newcfg.EraV1Block, head) {
+		return newCompatError("EraV1 start block", c.EraV1Block, newcfg.EraV1Block)
+	}
+	if isForkIncompatible(c.EraV2Block, newcfg.EraV2Block, head) {
+		return newCompatError("EraV2 start block", c.EraV2Block, newcfg.EraV2Block)
+	}
+	if isForkIncompatible(c.EraV3Block, newcfg.EraV3Block, head) {
+		return newCompatError("EraV3 start block", c.EraV3Block, newcfg.EraV3Block)
+	}
+	if isForkIncompatible(c.EraV4Block, newcfg.EraV4Block, head) {
+		return newCompatError("EraV4 start block", c.EraV4Block, newcfg.EraV4Block)
+	}
+	if isForkIncompatible(c.EraV5Block, newcfg.EraV5Block, head) {
+		return newCompatError("EraV5 start block", c.EraV5Block, newcfg.EraV5Block)
+	}
+	if isForkIncompatible(c.EraV6Block, newcfg.EraV6Block, head) {
+		return newCompatError("EraV6 start block", c.EraV6Block, newcfg.EraV6Block)
+	}
+	if isForkIncompatible(c.EraV7Block, newcfg.EraV7Block, head) {
+		return newCompatError("EraV7 start block", c.EraV7Block, newcfg.EraV7Block)
+	}
+	if isForkIncompatible(c.EraV8Block, newcfg.EraV8Block, head) {
+		return newCompatError("EraV8 start block", c.EraV8Block, newcfg.EraV8Block)
+	}
+	if isForkIncompatible(c.EraV9Block, newcfg.EraV9Block, head) {
+		return newCompatError("EraV9 start block", c.EraV9Block, newcfg.EraV9Block)
+	}
 	
 	return nil
 }
@@ -416,6 +473,15 @@ type Rules struct {
 	IsConstantinople                          bool
 	IsForkMasternode                          bool
 	IsForkSmartContract                       bool
+	IsEraV1                                   bool
+	IsEraV2                                   bool
+	IsEraV3                                   bool
+	IsEraV4                                   bool
+	IsEraV5                                   bool
+	IsEraV6                                   bool
+	IsEraV7                                   bool
+	IsEraV8                                   bool
+	IsEraV9                                   bool
 }
 
 // Rules ensures c's ChainID is not nil.
@@ -424,5 +490,5 @@ func (c *ChainConfig) Rules(num *big.Int) Rules {
 	if chainID == nil {
 		chainID = new(big.Int)
 	}
-	return Rules{ChainID: new(big.Int).Set(chainID), IsHomestead: c.IsHomestead(num), IsEIP150: c.IsEIP150(num), IsEIP155: c.IsEIP155(num), IsEIP158: c.IsEIP158(num), IsByzantium: c.IsByzantium(num), IsConstantinople: c.IsConstantinople(num), IsForkMasternode: c.IsForkMasternode(num), IsForkSmartContract: c.IsForkSmartContract(num)}
+	return Rules{ChainID: new(big.Int).Set(chainID), IsHomestead: c.IsHomestead(num), IsEIP150: c.IsEIP150(num), IsEIP155: c.IsEIP155(num), IsEIP158: c.IsEIP158(num), IsByzantium: c.IsByzantium(num), IsConstantinople: c.IsConstantinople(num), IsForkMasternode: c.IsForkMasternode(num), IsForkSmartContract: c.IsForkSmartContract(num) IsEraV1: c.IsEraV1(num) IsEraV2: c.IsEraV2(num) IsEraV3: c.IsEraV3(num) IsEraV4: c.IsEraV4(num) IsEraV5: c.IsEraV5(num) IsEraV6: c.IsEraV6(num) IsEraV7: c.IsEraV7(num) IsEraV8: c.IsEraV8(num) IsEraV9: c.IsEraV9(num)}
 }
